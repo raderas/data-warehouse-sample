@@ -1,8 +1,8 @@
 # Data Warehouse Project 
 This is a sample Data Warehouse Project built from the course *Build a modern Data Warehouse* on Udemy. It comprises two sections:
 
-1. [Building the Data Warehouse](building-the-data-warehouse-(data-engineering))
-1. [BI: Analytics & Reporting](bi-analytics--reporting-(data-analysis))
+1. [#Building the Data Warehouse](building-the-data-warehouse-(data-engineering))
+1. [#BI: Analytics & Reporting](bi-analytics--reporting-(data-analysis))
 
 ## Building the Data Warehouse (Data Engineering)
 
