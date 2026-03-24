@@ -1,3 +1,13 @@
+/*
+ * ============================================================
+ *  Create Tables
+ * ============================================================
+ * 
+ * Script Purpose:
+ * 	This script creates all tables in the bronze schema.
+ * If the tables exist it will drop and recreate them.
+ */
+
 drop table if exists bronze.crm_cust_info;
 CREATE table if not exists bronze.crm_cust_info(
 	cst_id int,
@@ -16,7 +26,7 @@ create table if not exists bronze.crm_prd_info(
 	prd_nm varchar(100),
 	prd_cost int,
 	prd_line char,
-	prd_start_dt date,
+	prd_start_dt varchar(50),
 	prd_end_dt date
 );
 
@@ -25,9 +35,9 @@ create table if not exists bronze.crm_sales_details(
 	sls_ord_num varchar(50),
 	sls_prd_key varchar(50),
 	sls_cust_id varchar(50),
-	sls_order_dt date,
-	sls_ship_dt date,
-	sls_due_dt date,
+	sls_order_dt int,
+	sls_ship_dt int,
+	sls_due_dt int,
 	sls_sales int,
 	sls_quantity int,
 	sls_price int
