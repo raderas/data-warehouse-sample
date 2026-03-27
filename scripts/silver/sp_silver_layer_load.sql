@@ -14,15 +14,20 @@
  * None
  */
 create or replace procedure silver.load_silver_layer()
+language plpgsql
 as 
 $$
+DECLARE
+  v_error_msg TEXT;
+  v_error_state TEXT;
+  v_error_context text;
 begin 
-RAISE NOTICE 'Begin of Silver layer load';
+RAISE NOTICE '>>Starting Silver layer load';
 
-raise NOTICE 'Truncating silver.crm_cust_info';
+raise NOTICE '>> Truncating silver.crm_cust_info';
 truncate table silver.crm_cust_info;
 
-raise notice ' Loading silver.crm_cust_info';
+raise notice '>> Loading silver.crm_cust_info';
 insert into silver.crm_cust_info(
   cst_id 
   , cst_key 
@@ -58,10 +63,10 @@ from ranked_customer_info
 where rn = 1;
 
 
-raise notice 'Truncating silver.cmr_prd_info';
+raise notice '>> Truncating silver.cmr_prd_info';
 truncate table silver.crm_prd_info;
 
-Raise NOTICE 'Loading silver.crm_prd_info';
+Raise NOTICE '>> Loading silver.crm_prd_info';
 insert into silver.crm_prd_info (
   prd_id 
   , prd_cat
@@ -88,10 +93,10 @@ select
 from bronze.crm_prd_info cpi;
 
 
-Raise NOTICE 'Truncating silver.crm_sales_details';
+Raise NOTICE '>> Truncating silver.crm_sales_details';
 truncate table silver.crm_sales_details ;
 
-Raise NOTICE 'Loading silver.crm_sales_details';
+Raise NOTICE '>> Loading silver.crm_sales_details';
 insert into silver.crm_sales_details (
   sls_ord_num
   , sls_prd_key 
@@ -128,10 +133,10 @@ select
 from bronze.crm_sales_details csd ;
 
 
-Raise NOTICE 'Truncating silver.erp_cust_az12';
+Raise NOTICE '>> Truncating silver.erp_cust_az12';
 truncate table silver.erp_cust_az12;
 
-Raise NOTICE ' Loading silver.erp_cust_az12';
+Raise NOTICE '>> Loading silver.erp_cust_az12';
 insert into silver.erp_cust_az12(
    cid,
    bdate,
@@ -149,10 +154,10 @@ select
 from bronze.erp_cust_az12 eca;
 
 
-Raise NOTICE 'Truncating silver.erp_loc_a101';
+Raise NOTICE '>> Truncating silver.erp_loc_a101';
 truncate table silver.erp_loc_a101;
 
-Raise NOTICE 'Loading silver.erp_loc_a101';
+Raise NOTICE '>> Loading silver.erp_loc_a101';
 insert into silver.erp_loc_a101 (
    cid
    , cntry
@@ -168,11 +173,11 @@ from bronze.erp_loc_a101 ela
 ;
 
 
-Raise NOTICE 'Truncating silver.erp_px_cat_g1v2';
+Raise NOTICE '>> Truncating silver.erp_px_cat_g1v2';
 truncate table silver.erp_px_cat_g1v2 ;
 
 
-Raise NOTICE 'Loading silver.erp_px_cat_g1v2';
+Raise NOTICE '>> Loading silver.erp_px_cat_g1v2';
 insert into silver.erp_px_cat_g1v2(
   id
   , cat 
@@ -186,8 +191,21 @@ select
   , trim(maintenance) as maintenance 
 from bronze.erp_px_cat_g1v2 epcgv ;
 
-end;
+Raise NOTICE '>> Silver Layer Load Completed Succesfully';
 
-$$
-language plpgsql;
+EXCEPTION
+  WHEN OTHERS THEN
+    --Get detailed error info
+    GET STACKED DIAGNOSTICS
+       v_error_msg = MESSAGE_TEXT;
+       v_error_state = RETURNED_SQLSTATE;
+       v_error_context = PG_EXECUTION_CONTEXT;
+
+    RAISE WARNING '--- Error detected ---';
+    RAISE WARNING 'Message: %', v_error_msg;
+    RAISE WARNING 'SQL State: %', v_error_state;
+    -- Re-throw the error so the calling job/user knows it failed
+    RAISE EXCEPTION 'Silver Layer load failed. Error: %', v_error_msg;
+END;
+$$;
 
