@@ -1,4 +1,15 @@
+/**********************************
+quality_checks_silver.sql
 
+Script purpose:
+Verify loaded data into silver layer tables:
+- Key uniqueness
+- Removed unwanted spaces
+- Field type corrections and checks
+
+Usage Notes:
+Scripts should be run after loading silver layer to check the loaded data.
+***********************************/
 
 ---QUality checks for silver tables
 select * from silver.crm_prd_info;
