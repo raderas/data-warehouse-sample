@@ -31,3 +31,17 @@ Develop SQL-based analytics to deliver detailed insifgths into:
 - Sales Trends
 
 These insights empower stakeholders with key business metrics, enabling strategic decision-making.
+
+---
+
+## High Level Architecture
+The data warehouse project comprises a medallion architecture with the following layers:
+- **Bronze** : Raw data as obtained form the source systems.
+- **Silver** : Cleaned and enriched data with data type and value checks.
+- **Gold** : Business ready datasets to serve users downstream.
+
+<img width="775" height="621" alt="high level architecture" src="https://github.com/user-attachments/assets/9c5c0c50-f75e-4252-ba28-85197692ed0c" />
+
+---
+## About Me:
+I'm Rafael Deras. An IT Professional specialized in Data Engineering/Data Analytics with 10+ years of experience delivering value translating Data into business ingishts and knowledge.
