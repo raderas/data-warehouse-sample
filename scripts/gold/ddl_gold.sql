@@ -2,7 +2,10 @@
 ddl_gold.sql
 
 Script purpose: Generate views for the gold layer integrating tables from the silver layer.
-The gold layer represents the final dimension and fact tables (Star Schema)
+The gold layer represents the final dimension and fact tables (Star Schema).
+
+Each view performs transformations and combines data from the silver layer to produce
+a clean, enrcihed and business-ready dataset. 
 
 Usage notes:
 This script will rtecreate/replace all vies for the gold layer. No data is destroyed so any changes should only rebuild views and be notified downstream.
