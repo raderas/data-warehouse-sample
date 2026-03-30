@@ -17,19 +17,35 @@
 |created_date|DATE|Date the customer was created in the system, formated as YYYY-MM-DD (e.g. '2015-06-08')|
 
 ## 2. gold.dim_products
-- **Purpose** : This view has products definitions for analyzing categories, subcategories, product lines, etc.
+- **Purpose** : Provides information about products and their attributes.
+- **Columns** :
 ---
 |Column|Data Type|Description|
 |---|---|---|
-|product_key|INT||
-|product_id|||
-|product_number|||
-|product_name|VARCHAR(50)||
-|category_id|||
-|product_category|VARCHAR(50)||
-|subcategory|VARCHAR(50)||
-|maintenance|||
-|cost|INT||
-|product_line|VARCHAR(50)||
-|start_date|DATE|Effective date for this record definition.|
-|end_date|DATE|Effective end date for this record definition. Since we are only considering active rows, all columns have NULL on this field.|
+|product_key|INT|Surrogate key uniquely identifying each product record in the product dimension table.|
+|product_id|INT|A unique identifier assigned to the product for internal tracking and referencing.|
+|product_number|VARCHAR(50)|A structured al[hanumeric code representing the product, often used for categorization or inventory.|
+|product_name|VARCHAR(50)|Descriptive name of the product. Including key details such as type, color and size.|
+|category_id|VARCHAR(50)|A unique identifier for the product's category, linking to its high-level classification.|
+|product_category|VARCHAR(50)|The broader classification of the product (e.g. Bikes, Components. To group related items).|
+|subcategory|VARCHAR(50)|A more detailed classification of the product within the category. Such as product type.|
+|maintenance|VARCHAR(50)|Indicates wether the product requires maintenance *e.g. 'Yes', No').|
+|cost|INT|The cost or base price of the product, measured in monetary units.|
+|product_line|VARCHAR(50)|The specific product line or series th which the product belongs (e.g. Road, Mountain, etc.)|
+|start_date|DATE|The date the product became availabel for sale or use, stored in source system.|
+
+## 3. gold.fact_sales
+- **Purpose** : Stores transactional sales data for analytics purposes.
+- **Columns** :
+---
+|Column|Data Type|Description|
+|---|---|---|
+|order_number|VARCHAR(50)|A unique alpha-numeric identifier for each sales order (e.g.'SO54496').|
+|product_key|INT|Surrogate key linking the order to the product dimension table.|
+|customer_key|INT|Surrogate key linking the order to the customer dimension table.|
+|order_date|DATE|The date when the order was placed.|
+|shipping_date|DATE|The date when the order was shipped to the customer.|
+|due_date|DATE|The date when the order payment was due|
+|sales_amount|INT|The total moentaty value of the sale for the line item, in whole currency units (e.g. '25')|
+|quantity|INT|The number of units of the product ordered for the line item (e.g. '1').|
+|price|INT|The price per unit of the product for the line item, in whole currency units (e.g. '25')|
