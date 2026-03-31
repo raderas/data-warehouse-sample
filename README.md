@@ -28,6 +28,12 @@ The data warehouse project comprises a medallion architecture with the following
 <img width="775" height="621" alt="high level architecture" src="https://github.com/user-attachments/assets/9c5c0c50-f75e-4252-ba28-85197692ed0c" />
 
 
+### Tools used
+We have deployed the database in Cloud SQL Postgres instance on GCP.
+Data load has been performed using DBeaver bulk data import to load the csv files into the bronze layer tables. For a continuos data load, cloud functions overGCP should be used to integrate data from GCP buckets.
+The data load into the silver layer has been coded as a sp inside the Postgres database. 
+Gold layer objects are dynamic views whicn generate the enriched business-ready data at runtime. Special consideration should be taken when generating the gold layer objects. In case querying takes too long, materialized views should be implemented or physical tables refreshed by means of a stored procedure to speedup queries for reporting.
+
 ---
 
 ## BI: Analytics & Reporting (Data Analysis)
